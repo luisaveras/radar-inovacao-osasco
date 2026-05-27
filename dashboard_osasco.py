@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import zipfile
 
 # Configuração da página para ocupar a tela toda
 st.set_page_config(page_title="Mapeamento MPE - Osasco", layout="wide")
@@ -10,7 +11,11 @@ ARQUIVO_CSV = 'osasco_micro_pequenas.csv.zip'
 # Função para carregar os dados (o cache evita que ele recarregue tudo a cada clique)
 @st.cache_data
 def carregar_dados():
-    df = pd.read_csv(ARQUIVO_CSV, sep=';', encoding='latin1', dtype=str, compression='zip')
+    # Abre o ZIP e lê especificamente o CSV, ignorando arquivos ocultos do Mac
+    with zipfile.ZipFile(ARQUIVO_CSV, 'r') as z:
+        with z.open('osasco_micro_pequenas.csv') as f:
+            df = pd.read_csv(f, sep=';', encoding='latin1', dtype=str)
+            
     # Limpando bairros vazios para o filtro não quebrar
     df['bairro'] = df['bairro'].fillna('NÃO INFORMADO').str.upper()
     
