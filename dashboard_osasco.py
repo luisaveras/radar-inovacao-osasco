@@ -25,8 +25,6 @@ def carregar_dados():
 
 # Título principal do seu Web App
 st.title("📊 Ecossistema de Micro e Pequenas Empresas - Osasco")
-import os
-st.write("Arquivos reais no servidor:", os.listdir('.'))
 st.markdown("Painel interativo para mapeamento de atores de inovação e desenvolvimento regional.")
 
 # Carregando os dados
